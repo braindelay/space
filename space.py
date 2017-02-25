@@ -66,10 +66,10 @@ class Ship(SpaceElement):
 		self.rect.x = self.pos[0]
 		self.rect.y = self.pos[1]
 
-		print ("-----")
-		print ("pos", self.pos)
-		print ("speed", self.speed)
-		print ("acc", self.acceleration)
+		#print ("-----")
+		#print ("pos", self.pos)
+		#print ("speed", self.speed)
+		#print ("acc", self.acceleration)
 
 	def apply_acceleration(self, planets):
 		self.acceleration= np.array((0.0,0.0))
