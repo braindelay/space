@@ -5,8 +5,7 @@ import numpy as np
 
 pygame.init()
 
-size = width, height = 640, 480
-speed = [1, 1]
+size = width, height = 700, 700
 black = 0, 0, 0
 
 screen = pygame.display.set_mode(size)
@@ -48,10 +47,6 @@ class Celestial(SpaceElement):
 
 		ship.acceleration += acceleration
 
-		#print ("GGG")
-		#print ("dir", direction)
-		#print ("uv", unit_vector)
-		#print ("acc", acceleration)
 
 		
 class Ship(SpaceElement):
@@ -100,11 +95,13 @@ def game():
 	sun = Celestial("sun.jpg", 100, 0, 1)
 	planets = [
 		sun, 
-		Celestial("planet.png", mass=5, radius=50, eccentricity=0.95),
+		Celestial("planet.png", mass=10, radius=50, eccentricity=0.95),
 		Celestial("planet.png", mass=15, radius=75, eccentricity=1.05),
 		Celestial("planet.png", mass=20, radius=125, eccentricity=0.95),
 		Celestial("planet.png", mass=10, radius=175, eccentricity=0.90),
-		Celestial("planet.png", mass=10, radius=250, eccentricity=0.85)
+		Celestial("planet.png", mass=10, radius=250, eccentricity=0.85),
+		Celestial("planet.png", mass=10, radius=300, eccentricity=0.95),
+		Celestial("planet.png", mass=20, radius=340, eccentricity=0.95),
 
 	]
 
