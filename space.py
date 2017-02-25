@@ -93,16 +93,18 @@ class Ship(SpaceElement):
 			self.acceleration[1]+=acceleration
 def game():
 	sun = Celestial("sun.jpg", 100, 0, 1)
+
+	player1= Celestial("player1.png", mass=20, radius=75, eccentricity=0.95)
+	player2= Celestial("player2.png", mass=10, radius=340, eccentricity=0.95)
 	planets = [
 		sun, 
 		Celestial("planet.png", mass=10, radius=50, eccentricity=0.95),
-		Celestial("planet.png", mass=15, radius=75, eccentricity=1.05),
-		Celestial("planet.png", mass=20, radius=125, eccentricity=0.95),
+		player1,
+		Celestial("planet.png", mass=15, radius=123, eccentricity=1.05),
 		Celestial("planet.png", mass=10, radius=175, eccentricity=0.90),
 		Celestial("planet.png", mass=10, radius=250, eccentricity=0.85),
-		Celestial("planet.png", mass=10, radius=300, eccentricity=0.95),
-		Celestial("planet.png", mass=20, radius=340, eccentricity=0.95),
-
+		Celestial("planet.png", mass=20, radius=300, eccentricity=0.95),
+		player2
 	]
 
 	ship = Ship(10, 10)
