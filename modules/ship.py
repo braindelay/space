@@ -3,10 +3,10 @@
 #
 from celestial import SpaceElement
 import pygame
-from math import  atan2, pi
+from math import  atan2, pi, sqrt, pow
 import numpy as np
 
-from settings import screen
+from settings import screen, width, height
 
 # The ship type is a space element - it is attracted to
 # all celestial objects
@@ -140,9 +140,12 @@ class Ship(SpaceElement):
             if self.fuel <= 0:
                 self.play_dead()
 
-    # does the ship need to be reset? (i.e. have we run out of fuel)
+    # does the ship need to be reset? (i.e. have we run out of fuel
+    # or have we wandered off the screen too far)
     def is_ship_dead(self):
-        return self.fuel <= 0
+        centre = np.array((width/2,height/2))
+        distance_to_centre = sqrt(pow( self.pos[0]- centre[0], 2) + pow( self.pos[1] - centre[1], 2))
+        return self.fuel <= 0 or distance_to_centre > width
 
     # do what is required when the ship is dead (i.e. play the breakdown sound)
     def play_dead(self):
@@ -152,8 +155,7 @@ class Ship(SpaceElement):
     def get_render_message(self):
 
         if self.is_launched:
-            debug = ""
-            return "Remaining fuel: %s%s: (%s.%s)" % (self.fuel, debug, self.rect.x,self.rect.y)
+            return ""
         else:
             return "Press direction to launch"
 

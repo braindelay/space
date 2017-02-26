@@ -13,7 +13,54 @@ class Player:
     def __init__(self, id, celestial):
         self.id = id
         self.celestial = celestial
-        self.life = 100
+        self.life = 500
+
+        self.icon = pygame.transform.rotate(celestial.sprite, 0)
+        self.icon_rect = self.icon.get_rect()
+
+
+    def render_details(self, basicfont):
+
+        # write some text about the player
+        pid =self.id
+        p_message = "Player: %s " % (pid)
+        p_text = basicfont.render(p_message, True, (255, 0, 0), (0, 0, 0))
+        p_textrect = p_text.get_rect()
+        p_textrect.x = 30
+        p_textrect.y = 20 * pid
+        screen.blit(p_text, p_textrect)
+
+        # draw the icon for the planet
+        self.icon_rect.y = 20 * (pid) - 3
+        screen.blit(self.icon,self.icon_rect)
+
+
+        total = 500
+
+        draw_gauge(100, pid * 20, 500, self.life)
+
+
+# Draw a rectangle gauge, 100 pixels wide, at the given point
+def draw_gauge(x, y, total, current):
+    ratio_remaining = (float(current) / float(total))
+
+    width_remaining = 100 * ratio_remaining
+    width_lost = 100 - width_remaining
+
+    # change the colour depending on the remaining value
+    if ratio_remaining > 0.5:
+        colour = (0, 255, 0)
+    elif ratio_remaining > 0.25:
+        colour = (255, 255, 0)
+    else:
+        colour = (255, 0, 0)
+
+    # draw the remaining rectangle (filled) and if there's
+    # any lost values, draw the rest of the gauge as an empty
+    # rectangle
+    pygame.draw.rect(screen, colour, (x, y, width_remaining, 18))
+    if ratio_remaining < 1.0:
+        pygame.draw.rect(screen, colour, (100 + width_remaining,y , width_lost, 18), 1)
 
 
 # the game model
@@ -51,9 +98,8 @@ class Game:
     # - if they've launched, how much fuel have they left
     def render_state(self):
         # the current state of the current player
-        player_message = "Player: %s ; life: %s" % (
+        player_message = "Player: %s " % (
             self.current_player_id + 1,
-            self.current_player().life
         )
 
         # there is a gap when we're not allowed to launch
@@ -69,9 +115,17 @@ class Game:
         message = "%s - %s" % (player_message, activity_message)
         basicfont = pygame.font.SysFont(None, 20)
         text = basicfont.render(message, True, (255, 0, 0), (0, 0, 0))
-
         textrect = text.get_rect()
         screen.blit(text, textrect)
+
+        # render the remaining fuel (if we're launched)
+        if self.ship.is_launched:
+            draw_gauge(100, 0, 100, self.ship.fuel)
+
+
+        for p in self.players:
+            p.render_details(basicfont)
+
 
     # check - if launching allowed - if someone has asked to launch the rocket
     def check_launch_trigger(self):
