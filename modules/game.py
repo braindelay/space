@@ -158,6 +158,17 @@ class Game:
                     self.ship.fuel = 0
                     break
 
+    # If the player _can_ shoot, but is delaying in order to get an
+    # easyshot, we should punish them for taking their time by
+    #healing the other players
+    def heal_other_players(self):
+        if self.is_launch_allowed and not self.ship.is_launched:
+            # find all the other players, and heal them
+            # if they're not dead
+            for p in self.players:
+                if p is not self.current_player() and p.life > 0 and p.life < p.total_life:
+                    # we do this every 40th of a second
+                    p.life += 5 / 40.0
     # the game is over when one player has no more life
     def is_over(self):
         for p in self.players:

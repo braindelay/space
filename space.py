@@ -130,6 +130,7 @@ def playGame():
             # the ship isn't launched, so check if we've been asked
             # to do so
             game.check_launch_trigger()
+            game.heal_other_players()
 
         # redraw the frame, but we don't want a framerate > 40
         pygame.display.flip()
