@@ -1,6 +1,6 @@
 import sys, pygame
 from pygame.locals import *
-from math import cos, sin, sqrt, pow, log, atan2, pi
+from math import cos, sin, pow, atan2, pi
 from random import randint
 import numpy as np
 
@@ -197,7 +197,7 @@ class Ship(SpaceElement):
 
         if self.is_launched:
             debug = ""
-            return "Remaining fuel: %s%s" % (self.fuel, debug)
+            return "Remaining fuel: %s%s: (%s.%s)" % (self.fuel, debug, self.rect.x,self.rect.y)
         else:
             return "Press direction to launch"
 
@@ -316,7 +316,7 @@ class Game:
 
 def intro():
     text_lines = [
-        [80, "Newton Wars"],
+        [80, "Astro Battles!!!!"],
         [30, "The second and seventh planets are in the midst"],
         [30, "of a terrible religious war"],
         [20, "(tabs or spaces)"],
