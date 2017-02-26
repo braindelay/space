@@ -154,6 +154,7 @@ class Game:
             # if we hit anything the ship can be destroyed
             for c in self.celestials:
                 if self.ship.rect.colliderect(c.rect):
+                    c.hit()
                     self.explosion_channel.play(self.explosion)
                     self.ship.fuel = 0
                     break

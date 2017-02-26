@@ -71,15 +71,14 @@ def intro():
 def playGame():
 
     # build the solar system
-    sun = Celestial("resources/images/sun.jpg", 100, 0, 1)
+    sun = Celestial("resources/images/sun.jpg", 75, 0, 1)
 
-    player1 = Player(1, Celestial("resources/images/player1.png", mass=20, radius=75, eccentricity=0.95))
-    player2 = Player(2, Celestial("resources/images/player2.png", mass=10, radius=340, eccentricity=0.95))
+    player1 = Player(1, Celestial("resources/images/player1.png", mass=20, radius=85, eccentricity=0.95))
+    player2 = Player(2, Celestial("resources/images/player2.png", mass=20, radius=340, eccentricity=0.95))
 
     # this collection is everything that can attract the ship
     planets = [
         sun,
-        Celestial("resources/images/planet.png", mass=10, radius=50, eccentricity=0.95),
         player1.celestial,
         Celestial("resources/images/planet.png", mass=15, radius=123, eccentricity=1.05),
         Celestial("resources/images/planet.png", mass=10, radius=175, eccentricity=0.90),
@@ -115,7 +114,14 @@ def playGame():
         # - dragging it towards the sun and each planet
         # - if the player is pressing the direction keys, then apply that thrust
         if ship.is_launched:
-            ship.apply_acceleration(planets)
+
+            # while the ship is launching we ignore the home planet
+            attracting_planets = planets
+            if ship.is_launching:
+                attracting_planets = [e for e in planets if e != game.current_player().celestial ]
+
+
+            ship.apply_acceleration(attracting_planets)
             ship.move()
 
             # if the ship has hit something, or has run out of fuel, then

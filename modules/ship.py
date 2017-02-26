@@ -99,15 +99,11 @@ class Ship(SpaceElement):
         # to include all the celestials and any ship control
         self.acceleration = np.array((0.0, 0.0))
         self.control()
-        self.attractTo(planets)
+
+        for p in planets:
+            p.attract(self)
 
 
-    # attract the ship to all the listed planets
-    # but only after we've fully taken off
-    def attractTo(self, planets):
-        if self.is_launched and not self.is_launching:
-            for p in planets:
-                p.attract(self)
 
     # apply any controls to the ship - this means (if we're launched)
     # if we press any direction button, we should apply acceleration

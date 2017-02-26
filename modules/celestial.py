@@ -57,12 +57,17 @@ class Celestial(SpaceElement):
         direction = pos - ship.pos
 
         distance = np.sqrt(np.sum((direction) ** 2))
-        unit_vector = np.nan_to_num(direction / abs(direction))
-        G = 5
-        acceleration = G * self.mass * unit_vector / pow(distance, 2)
-        ship.acceleration += acceleration
+        if abs(direction).all() > 0.0:
+            unit_vector = np.nan_to_num(direction / abs(direction))
+            G = 5
+            acceleration = G * self.mass * unit_vector / pow(distance, 2)
+            ship.acceleration += acceleration
 
     # draw a circle around the planet
-    def identify(self, colour):
+    def identify(self, colour, fill=1):
         pos = self.pos();
-        pygame.draw.circle(screen, colour, (int(pos[0]),int(pos[1])), 15, 1)
+        pygame.draw.circle(screen, colour, (int(pos[0]),int(pos[1])), 15, fill)
+
+    # if the planet has been hit, draw a flash circle around it
+    def hit(self):
+        self.identify( (255,0,0), 0)
