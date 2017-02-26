@@ -68,10 +68,10 @@ class Celestial(SpaceElement):
 # The ship type		
 class Ship(SpaceElement):
     def __init__(self):
-        SpaceElement.__init__(self, "ship.png")
+        SpaceElement.__init__(self, "resources/images/ship.png")
 
-        self.thrusters = pygame.mixer.Sound("thrusters.wav")
-        self.breakdown = pygame.mixer.Sound("breakdown.wav")
+        self.thrusters = pygame.mixer.Sound("resources/sounds/thrusters.wav")
+        self.breakdown = pygame.mixer.Sound("resources/sounds/breakdown.wav")
 
         self.explosion_channel = pygame.mixer.Channel(0)
         self.breakdown_channel = pygame.mixer.Channel(1)
@@ -221,7 +221,7 @@ class Game:
         self.next_player()
 
         self.explosion_channel = pygame.mixer.Channel(2)
-        self.explosion = pygame.mixer.Sound("explosion.wav")
+        self.explosion = pygame.mixer.Sound("resources/sounds/explosion.wav")
 
     # advance to the next player- this resets the ship, etc
     def next_player(self):
@@ -349,18 +349,18 @@ def intro():
 
 
 def playGame():
-    sun = Celestial("sun.jpg", 100, 0, 1)
+    sun = Celestial("resources/images/sun.jpg", 100, 0, 1)
 
-    player1 = Player(1, Celestial("player1.png", mass=20, radius=75, eccentricity=0.95))
-    player2 = Player(2, Celestial("player2.png", mass=10, radius=340, eccentricity=0.95))
+    player1 = Player(1, Celestial("resources/images/player1.png", mass=20, radius=75, eccentricity=0.95))
+    player2 = Player(2, Celestial("resources/images/player2.png", mass=10, radius=340, eccentricity=0.95))
     planets = [
         sun,
-        Celestial("planet.png", mass=10, radius=50, eccentricity=0.95),
+        Celestial("resources/images/planet.png", mass=10, radius=50, eccentricity=0.95),
         player1.celestial,
-        Celestial("planet.png", mass=15, radius=123, eccentricity=1.05),
-        Celestial("planet.png", mass=10, radius=175, eccentricity=0.90),
-        Celestial("planet.png", mass=10, radius=250, eccentricity=0.85),
-        Celestial("planet.png", mass=20, radius=300, eccentricity=0.95),
+        Celestial("resources/images/planet.png", mass=15, radius=123, eccentricity=1.05),
+        Celestial("resources/images/planet.png", mass=10, radius=175, eccentricity=0.90),
+        Celestial("resources/images/planet.png", mass=10, radius=250, eccentricity=0.85),
+        Celestial("resources/images/planet.png", mass=20, radius=300, eccentricity=0.95),
         player2.celestial
     ]
 
