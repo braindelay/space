@@ -1,4 +1,6 @@
-
+#
+# Define the simple settings, we reuse these as global values later on
+#
 import pygame
 
 size = width, height = 700, 700

@@ -1,3 +1,9 @@
+#
+# This handles the players and the overall game model
+# Mostly concerned with knowing what the game elements are
+# up to. The actual game is driven from outside of this
+#
+#
 import pygame
 from settings import width,height,screen,black
 
@@ -19,7 +25,6 @@ class Game:
         self.screen = screen
         self.celestials = celestials
         self.next_player()
-
         self.explosion_channel = pygame.mixer.Channel(2)
         self.explosion = pygame.mixer.Sound("resources/sounds/explosion.wav")
 
@@ -40,7 +45,10 @@ class Game:
     def current_player(self):
         return self.players[self.current_player_id]
 
-    # draw the current state
+    # draw the current state, i.e.
+    # - which player is on, and how much life is left
+    # - can they launch the ship
+    # - if they've launched, how much fuel have they left
     def render_state(self):
         # the current state of the current player
         player_message = "Player: %s ; life: %s" % (
@@ -65,7 +73,7 @@ class Game:
         textrect = text.get_rect()
         screen.blit(text, textrect)
 
-    # check - if launching allowed - if someone has launched the rocket
+    # check - if launching allowed - if someone has asked to launch the rocket
     def check_launch_trigger(self):
         if self.is_launch_allowed:
             keys = pygame.key.get_pressed()
@@ -98,9 +106,11 @@ class Game:
 
         return len(self.players) == 1
 
+    # get the winner - this is only valid if is_over returns True
     def winner(self):
         return self.players[0]
 
+    # draw the game over message
     def render_game_over(self):
         screen.fill(black)
 

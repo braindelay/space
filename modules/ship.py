@@ -1,3 +1,6 @@
+#
+# Define the ship
+#
 from celestial import SpaceElement
 import pygame
 from math import  atan2, pi
@@ -5,23 +8,33 @@ import numpy as np
 
 from settings import screen
 
-# The ship type
+# The ship type is a space element - it is attracted to
+# all celestial objects
 class Ship(SpaceElement):
     def __init__(self):
         SpaceElement.__init__(self, "resources/images/ship.png")
 
+        # load up the sounds now, so we can start them later on without a delay
         self.thrusters = pygame.mixer.Sound("resources/sounds/thrusters.wav")
         self.breakdown = pygame.mixer.Sound("resources/sounds/breakdown.wav")
 
+        # we use seperate channels so we can stop the explosion later on
+        # without having to checkif we're already playing the breakdown
         self.explosion_channel = pygame.mixer.Channel(0)
         self.breakdown_channel = pygame.mixer.Channel(1)
 
         self.reset()
 
+    #
+    # Start the thrusters sound, but only if we're not already playing it
+    #
     def play_thrusters_sound(self):
         if not self.explosion_channel.get_busy():
             self.explosion_channel.play(self.thrusters)
 
+    #
+    # Stop the thruster sound from playing
+    #
     def stop_thrusers_sound(self):
         self.explosion_channel.stop()
 
@@ -60,23 +73,20 @@ class Ship(SpaceElement):
             self.is_launching = False
 
         # move the ship accordingto the acceleration
+        # we use this to check collisions, but we don't render with this
         self.speed += self.acceleration
         self.pos += self.speed
-
         # move the sprite to the position
         self.rect.x = self.pos[0]
         self.rect.y = self.pos[1]
 
-        # point the sprite in the directon we're moving
+        # copy the sprite, and point in the direction we're moving
         angle = atan2(self.speed[0], self.speed[1]) * 180 / pi
-
-
         rotated = pygame.transform.rotate(self.sprite, angle)
         rotated_rect = rotated.get_rect()
-
+        # move the rotated sprite to where it belongs, and draw it
         rotated_rect.x = self.pos[0]
         rotated_rect.y = self.pos[1]
-
         screen.blit(rotated, rotated_rect)
 
     # apply all accelerations to the ship
@@ -95,7 +105,12 @@ class Ship(SpaceElement):
             for p in planets:
                 p.attract(self)
 
-    # apply any controls to the ship
+    # apply any controls to the ship - this means (if we're launched)
+    # if we press any direction button, we should apply acceleration
+    # in that direction
+    #
+    # this will decrement the fuel, and start/stop the thruster sound
+    # as appropriate
     def control(self):
         if self.is_launched:
             acceleration = 0.125
@@ -125,10 +140,11 @@ class Ship(SpaceElement):
             if self.fuel <= 0:
                 self.play_dead()
 
-    # does the ship needto be reset?
+    # does the ship need to be reset? (i.e. have we run out of fuel)
     def is_ship_dead(self):
         return self.fuel <= 0
 
+    # do what is required when the ship is dead (i.e. play the breakdown sound)
     def play_dead(self):
         self.breakdown_channel.play(self.breakdown)
 

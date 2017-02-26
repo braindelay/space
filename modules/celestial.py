@@ -1,10 +1,12 @@
+#
+# Define the celestial objects - the base space element (we use this for the
+# ship later on) and also for the planets
+#
+#
 import pygame
-
 from random import randint
 from math import cos, sin
 import numpy as np
-
-
 from settings import width,height
 
 # A general space element, containsa sprite, etc
@@ -40,6 +42,7 @@ class Celestial(SpaceElement):
         self.rect.x = width / 2 + self.radius * cos(self.angle)
         self.rect.y = height / 2 + self.eccentricity * self.radius * sin(self.angle)
 
+    # get the position for this celestial object
     def pos(self):
         return np.array((float(self.rect.x), float(self.rect.y)))
 
@@ -48,14 +51,13 @@ class Celestial(SpaceElement):
     def attract(self, ship):
         pos = self.pos()
 
-        # basic newton
+        # basic newton - but set up to work on the
+        # map of pixels that we have
         direction = pos - ship.pos
 
         distance = np.sqrt(np.sum((direction) ** 2))
         if abs(direction) is not 0:
             unit_vector = direction / abs(direction)
-
             G = 5
             acceleration = G * self.mass * unit_vector / pow(distance, 2)
-
             ship.acceleration += acceleration
