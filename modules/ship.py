@@ -3,7 +3,7 @@
 #
 from celestial import SpaceElement
 import pygame
-from math import  atan2, pi, sqrt, pow
+from math import  atan2, pi, sqrt, pow, cos, sin
 import numpy as np
 
 from settings import screen, width, height
@@ -84,10 +84,13 @@ class Ship(SpaceElement):
         angle = atan2(self.speed[0], self.speed[1]) * 180 / pi
         rotated = pygame.transform.rotate(self.sprite, angle)
         rotated_rect = rotated.get_rect()
+
         # move the rotated sprite to where it belongs, and draw it
         rotated_rect.centerx = self.pos[0]
         rotated_rect.centery = self.pos[1]
         screen.blit(rotated, rotated_rect)
+
+
 
     # apply all accelerations to the ship
     # (both by control and by gravity)
@@ -95,8 +98,9 @@ class Ship(SpaceElement):
         # reset the acceleration vector and then recalculate it
         # to include all the celestials and any ship control
         self.acceleration = np.array((0.0, 0.0))
-        self.attractTo(planets)
         self.control()
+        self.attractTo(planets)
+
 
     # attract the ship to all the listed planets
     # but only after we've fully taken off
@@ -134,6 +138,12 @@ class Ship(SpaceElement):
             if action:
                 self.play_thrusters_sound()
                 self.fuel += fuel_usage
+
+                # finally, we draw a simple flame
+                if abs(self.acceleration).all() > 0.0:
+                    unit_vector = np.nan_to_num(self.acceleration / abs(self.acceleration))
+                    fire_pos = (self.pos - unit_vector * 5).astype(int)
+                    pygame.draw.circle(screen, (255, 255, 0), fire_pos, 5)
             else:
                 self.stop_thrusers_sound()
 

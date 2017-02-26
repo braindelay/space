@@ -57,11 +57,10 @@ class Celestial(SpaceElement):
         direction = pos - ship.pos
 
         distance = np.sqrt(np.sum((direction) ** 2))
-        if abs(direction) is not 0:
-            unit_vector = direction / abs(direction)
-            G = 5
-            acceleration = G * self.mass * unit_vector / pow(distance, 2)
-            ship.acceleration += acceleration
+        unit_vector = np.nan_to_num(direction / abs(direction))
+        G = 5
+        acceleration = G * self.mass * unit_vector / pow(distance, 2)
+        ship.acceleration += acceleration
 
     # draw a circle around the planet
     def identify(self, colour):

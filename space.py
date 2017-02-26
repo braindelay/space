@@ -34,6 +34,7 @@ def intro():
         [40, "to guide your rocket to its target"],
         [30, "The less fuel you use, the more damage you do"],
         [40, "Press any key to start"],
+
     ]
 
     # now we scan through the text, and render it centered on the screen

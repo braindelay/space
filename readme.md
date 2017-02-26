@@ -14,5 +14,5 @@ Based on python `2.7`
 
 Just relies on a few simple `pip installs`
 
-- `pygame`
-- `numpy`
+- `pygame` @ http://www.pygame.org/
+- `numpy` @ http://www.numpy.org/
