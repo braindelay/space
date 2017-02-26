@@ -7,13 +7,14 @@ import pygame
 from random import randint
 from math import cos, sin
 import numpy as np
-from settings import width,height
+from settings import width,height, screen
 
 # A general space element, containsa sprite, etc
 class SpaceElement:
     def __init__(self, image):
         self.sprite = pygame.image.load(image)
         self.rect = self.sprite.get_rect()
+
 
     # redraw the element
     def blit(self, screen):
@@ -44,7 +45,7 @@ class Celestial(SpaceElement):
 
     # get the position for this celestial object
     def pos(self):
-        return np.array((float(self.rect.x), float(self.rect.y)))
+        return np.array((float(self.rect.centerx), float(self.rect.centery)))
 
     # attract the ship towards this celestial
     # this will directly edit the ship's acceleration vector
@@ -61,3 +62,8 @@ class Celestial(SpaceElement):
             G = 5
             acceleration = G * self.mass * unit_vector / pow(distance, 2)
             ship.acceleration += acceleration
+
+    # draw a circle around the planet
+    def identify(self, colour):
+        pos = self.pos();
+        pygame.draw.circle(screen, colour, (int(pos[0]),int(pos[1])), 15, 1)

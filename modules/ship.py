@@ -77,16 +77,16 @@ class Ship(SpaceElement):
         self.speed += self.acceleration
         self.pos += self.speed
         # move the sprite to the position
-        self.rect.x = self.pos[0]
-        self.rect.y = self.pos[1]
+        self.rect.centerx = self.pos[0]
+        self.rect.centery = self.pos[1]
 
         # copy the sprite, and point in the direction we're moving
         angle = atan2(self.speed[0], self.speed[1]) * 180 / pi
         rotated = pygame.transform.rotate(self.sprite, angle)
         rotated_rect = rotated.get_rect()
         # move the rotated sprite to where it belongs, and draw it
-        rotated_rect.x = self.pos[0]
-        rotated_rect.y = self.pos[1]
+        rotated_rect.centerx = self.pos[0]
+        rotated_rect.centery = self.pos[1]
         screen.blit(rotated, rotated_rect)
 
     # apply all accelerations to the ship

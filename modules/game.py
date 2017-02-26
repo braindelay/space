@@ -13,7 +13,8 @@ class Player:
     def __init__(self, id, celestial):
         self.id = id
         self.celestial = celestial
-        self.life = 500
+        self.total_life= 500.0
+        self.life = self.total_life
 
         self.icon = pygame.transform.rotate(celestial.sprite, 0)
         self.icon_rect = self.icon.get_rect()
@@ -35,9 +36,8 @@ class Player:
         screen.blit(self.icon,self.icon_rect)
 
 
-        total = 500
 
-        draw_gauge(100, pid * 20, 500, self.life)
+        draw_gauge(100, pid * 20, self.total_life, self.life)
 
 
 # Draw a rectangle gauge, 100 pixels wide, at the given point
@@ -48,12 +48,8 @@ def draw_gauge(x, y, total, current):
     width_lost = 100 - width_remaining
 
     # change the colour depending on the remaining value
-    if ratio_remaining > 0.5:
-        colour = (0, 255, 0)
-    elif ratio_remaining > 0.25:
-        colour = (255, 255, 0)
-    else:
-        colour = (255, 0, 0)
+    colour = get_gauge_colour(ratio_remaining)
+
 
     # draw the remaining rectangle (filled) and if there's
     # any lost values, draw the rest of the gauge as an empty
@@ -62,6 +58,13 @@ def draw_gauge(x, y, total, current):
     if ratio_remaining < 1.0:
         pygame.draw.rect(screen, colour, (100 + width_remaining,y , width_lost, 18), 1)
 
+def get_gauge_colour(ratio_remaining):
+    if ratio_remaining > 0.5:
+        return  (0, 255, 0)
+    elif ratio_remaining > 0.25:
+        return (255, 255, 0)
+    else:
+        return (255, 0, 0)
 
 # the game model
 class Game:
@@ -125,6 +128,9 @@ class Game:
 
         for p in self.players:
             p.render_details(basicfont)
+
+            if self.current_player() == p:
+                p.celestial.identify(get_gauge_colour(p.life / p.total_life))
 
 
     # check - if launching allowed - if someone has asked to launch the rocket
